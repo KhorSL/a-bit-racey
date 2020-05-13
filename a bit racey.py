@@ -2,6 +2,8 @@ import pygame
 import time
 import random
 
+from db import Database
+
 pygame.init()
 crash_sound = pygame.mixer.Sound("Crash.wav")
 coins_drop = pygame.mixer.Sound("coins_drop.wav")
@@ -249,6 +251,9 @@ def crash(car_id, play_mode):
     pygame.mixer.Sound.play(crash_sound)
 
     if play_mode == 'single_player':
+        # Update database highscore, similar hard coding this part
+        db.update_highscore(1, h_score)
+
         largeText = pygame.font.Font('freesansbold.ttf',115)
         TextSurf, TextRect = text_objects("Crashed", largeText)
         TextRect.center = ((display_width/2),(display_height/2))
@@ -564,6 +569,10 @@ def game_loop():
     global score
     global h_score
 
+    # Cuurently only one player so can hardcode this part
+    h_score = db.get_highscore(1);
+    print ("Current highscore:" + str(h_score))
+
     global car_width
 
     global s_buff
@@ -826,8 +835,14 @@ def multiplayer():
         pygame.display.update()
         clock.tick(60)
 
+# Database setup
+db = Database()
+
+# Prefer to put into a main() function
+# But it works for now
+db.setup()
 game_intro()
-#game_loop()
+game_loop()
 multiplayer()
 pygame.quit()
 quit()
