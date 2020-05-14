@@ -19,7 +19,7 @@ class Database:
         table_player = "CREATE TABLE IF NOT EXISTS Player (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(255), highscore INTEGER, coins INTEGER, gems INTEGER);"
         table_vehicle = "CREATE TABLE IF NOT EXISTS Vehicle (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(255) NOT NULL);"
         table_player_vehicle = "CREATE TABLE IF NOT EXISTS Player_Vehicle (player_id INTEGER, vehicle_id INTEGER, FOREIGN KEY (player_id) REFERENCES Player(id), FOREIGN KEY (vehicle_id) REFERENCES Vehicle(id), PRIMARY KEY (player_id, vehicle_id));"
-        admin_player = "INSERT INTO Player (name, highscore, coins, gems) VALUES ('admin',0,0,0);"
+        admin_player = "INSERT OR IGNORE INTO Player (id, name, highscore, coins, gems) VALUES (1,'admin',0,0,0);"
         
         self.cursor.execute(table_player)
         self.cursor.execute(table_vehicle)
